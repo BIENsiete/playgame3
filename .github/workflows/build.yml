@@ -1,0 +1,47 @@
+name: Build
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/ps3dev/ps3dev:latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Verify toolchain
+      run: |
+        ppu-g++ --version
+        make_self --version 2>&1 || true
+        make_pkg --version 2>&1 || true
+
+    - name: Build project
+      run: |
+        make clean
+        make all
+
+    - name: Create PKG
+      run: |
+        make pkg
+
+    - name: Upload PKG artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: playgame3-pkg
+        path: playgame3.pkg
+        if-no-files-found: error
+
+    - name: Upload SELF artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: playgame3-self
+        path: playgame3.self
+        if-no-files-found: error
