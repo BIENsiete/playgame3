@@ -42,7 +42,7 @@ jobs:
       run: |
         git clone https://github.com/ps3dev/ps3toolchain.git /tmp/ps3toolchain
         cd /tmp/ps3toolchain
-        sudo -E ./toolchain.sh
+        sudo env PATH=$PATH ./toolchain.sh
         cd /
         sudo rm -Rf /tmp/ps3toolchain
 
