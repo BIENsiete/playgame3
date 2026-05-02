@@ -1,1 +1,6 @@
-errores\
+errores/
+*.o
+*.elf
+*.self
+*.pkg
+ps3_root/

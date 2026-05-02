@@ -14,11 +14,13 @@ jobs:
     env:
       PS3DEV: /usr/local/ps3dev
       PSL1GHT: /usr/local/ps3dev
-      PATH: /usr/local/ps3dev/bin:/usr/local/ps3dev/ppu/bin:/usr/local/ps3dev/spu/bin:$PATH
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+
+    - name: Add PS3DEV to PATH
+      run: echo "/usr/local/ps3dev/bin:/usr/local/ps3dev/ppu/bin:/usr/local/ps3dev/spu/bin" >> $GITHUB_PATH
 
     - name: Install dependencies
       run: |
@@ -40,7 +42,7 @@ jobs:
       run: |
         git clone https://github.com/ps3dev/ps3toolchain.git /tmp/ps3toolchain
         cd /tmp/ps3toolchain
-        sudo ./toolchain.sh
+        sudo -E ./toolchain.sh
         cd /
         sudo rm -Rf /tmp/ps3toolchain
 
